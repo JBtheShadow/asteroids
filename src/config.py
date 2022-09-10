@@ -1,2 +1,2 @@
-show_debugging = True
+show_debugging = False
 show_fps = True

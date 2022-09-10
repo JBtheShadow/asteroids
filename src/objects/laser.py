@@ -7,8 +7,8 @@ from utils import *
 
 class Laser:
     SPEED = 500.0
-    SIZE = 1.5
-    EXPLODE_SIZE = 5.0
+    SIZE = 2.5
+    EXPLODE_SIZE = 7.5
     EXPLODE_DUR = 0.1
 
     class Status(Enum):

@@ -21,6 +21,9 @@ class Text:
         self.color = color
         self.opacity = opacity
 
+        if self.fade_in:
+            self.opacity = 25
+
     def set_color(self, new_color):
         self.color = new_color
 
@@ -28,11 +31,11 @@ class Text:
         if self.opacity > 0:
             if self.fade_in:
                 if self.opacity < 255:
-                    self.opacity = max(self.opacity + 255 / TEXT_FADE_DUR / dt, 255)
+                    self.opacity = min(self.opacity + 255 / TEXT_FADE_DUR * dt, 255)
                 else:
                     self.fade_in = False
             elif self.fade_out:
-                self.opacity = min(0, self.opacity - 255 / TEXT_FADE_DUR / dt)
+                self.opacity = max(0, self.opacity - 255 / TEXT_FADE_DUR * dt)
 
             font = fonts[self.font_size]
 
@@ -64,7 +67,7 @@ class Text:
                 r_text = text
                 if self.opacity < 255:
                     r_text = pygame.Surface((fw, fh))
-                    r_text.fill(WHITE)
+                    r_text.fill(BLACK)
                     r_text.blit(text, (0, 0, fw, fh))
                     r_text.set_alpha(self.opacity)
                 win.blit(r_text, (tx, ty, fw, fh))

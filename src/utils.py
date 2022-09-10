@@ -1,4 +1,6 @@
 import pygame
+import json
+from pathlib import Path
 from math import cos, sin, sqrt
 from random import random
 
@@ -78,7 +80,7 @@ def draw_explosion(win: pygame.Surface, big_color, small_color, center, big_radi
 def draw_big_explosion(win: pygame.Surface, big_color, medium_color, small_color, center, big_radius, medium_radius, small_radius):
     pygame.draw.circle(win, big_color, center, big_radius)
     pygame.draw.circle(win, medium_color, center, medium_radius)
-    pygame.draw.circle(win, big_color, center, big_radius)
+    pygame.draw.circle(win, small_color, center, small_radius)
 
 def draw_ship_shape(win: pygame.Surface, x, y, radius, angle, color, width, debugging):
     si, co = sin(angle), cos(angle)
@@ -89,3 +91,35 @@ def draw_ship_shape(win: pygame.Surface, x, y, radius, angle, color, width, debu
         (x - (2/3 * co - si) * radius, y + (2/3 * si + co) * radius)
     ]
     draw_polygon(win, color, points, width)
+
+def create_path_if_not_exists(file_path):
+    path = Path(file_path)
+    path.parent.mkdir(parents= True, exist_ok= True)
+
+def create_json_if_not_exists(file_path):
+    path = Path(file_path)
+    if not path.exists():
+        file = open(file_path, "w")
+        file.write(json.dumps({"highScore": 0}))
+        file.close()
+
+def read_json(file_name):
+    full_file_path = f"./data/{file_name}.json"
+    
+    create_path_if_not_exists(full_file_path)
+    create_json_if_not_exists(full_file_path)
+    
+    file = open(full_file_path, "r")
+    data = file.read()
+    file.close()
+
+    return json.loads(data)
+
+def write_json(file_name, data):
+    full_file_path = f"./data/{file_name}.json"
+
+    create_path_if_not_exists(full_file_path)
+
+    file = open(full_file_path, "w")
+    file.write(json.dumps(data))
+    file.close()
